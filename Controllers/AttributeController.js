@@ -4,7 +4,7 @@ import connection from '../connection/index.js';
 export const getAttributes = async(req, res) => {
     
 }
-
+ 
 export const createAttributes = async(req, res) => {
     
 }

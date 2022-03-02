@@ -5,7 +5,7 @@ export const getCategory = async(req, res) => {
     connection.query('SELECT * FROM Categories', (err, result, fields) => {
         if(err) return res.status(404).json(err);
         res.status(200).json(result)
-    })
+    }) 
 }  
 
 export const createCategory = async(req, res) => {
@@ -16,7 +16,7 @@ export const createCategory = async(req, res) => {
             if(err) return res.status(404).json(err)
             return res.status(200).json({...result[0]});
         })
-    }) 
+    })  
 }
 
 
