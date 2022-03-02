@@ -14,7 +14,6 @@ app.use(Express.urlencoded({extended: true, limit: '50mb'}));
 app.use(cors());
 
 
-connection();
 routes(app);  
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
