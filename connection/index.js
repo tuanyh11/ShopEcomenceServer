@@ -1,14 +1,13 @@
 import config from '../config/config.js';
-import mssql from 'mssql'; 
+import mysql from 'mysql';
+
+const connection = () => mysql.createPool(process.env.DB_URL);
+
+let pool = connection();
+
+pool.on('error',  (err) => {
+    if(err) return pool = connection();
+})
 
 
-const connection = async() => {
-    try {
-        await mssql.connect(config.SQLconfig);
-        console.log('connect server is successfuly!');
-    } catch (error) {
-        console.log(error)
-    }
-}
-
-export default connection;   
+export default pool;    

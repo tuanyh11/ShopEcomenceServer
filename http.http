@@ -1,4 +1,4 @@
 
 
-get   http://localhost:5000/api/category/1 
+get   http://localhost:5000/api/category/
 Content-Type: application/json
