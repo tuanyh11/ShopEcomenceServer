@@ -33,5 +33,9 @@ export const editCategory = async(req, res) => {
 
  
 export const deleteCategory = async(req, res) => {
-   
-}
+    if(!req.params.id) return res.status(403).json('something was wrong with your id');
+     connection.query(`DELETE FROM Categories WHERE id = ${req.params.id}`, (err, result, fields) => {
+         if(err) return res.status(404).json(err);
+         res.status(200).json('delete sucessfully');
+     }) 
+ }
