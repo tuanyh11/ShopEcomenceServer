@@ -4,7 +4,7 @@ import { getAttributes, createAttributes, updateAttributes } from "../Controller
 const router = Router();
 
 router.get("/:id", getAttributes);
-router.post("/", createAttributes);
+router.post("/", createAttributes)
 router.patch("/", updateAttributes);
 
 export default router; 

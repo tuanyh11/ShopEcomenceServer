@@ -1,41 +1,40 @@
 import config from '../config/config.js';
-import connection from '../connection/index.js'
+import Categories from '../models/Categories.js';
 
 export const getCategory = async(req, res) => {
-    connection.query('SELECT * FROM Categories', (err, result, fields) => {
-        if(err) return res.status(404).json(err);
-        res.status(200).json(result)
-    }) 
+   try {
+       const categories = await Categories.findAll();
+       res.status(200).json({message: 'successed', result: categories});
+   } catch (error) {
+        res.status(401).json({message: 'successed', result: error});
+   }
 }  
 
 export const createCategory = async(req, res) => {
-    if(!req.body.name) return res.status(403).json('something was wrong with your value');
-    connection.query(`INSERT INTO Categories(name)  VALUES('${req.body.name}')`, (err, result, fields) => {
-        if(err) return res.status(404).json(err);
-        connection.query(`SELECT * FROM Categories WHERE id = ${result.insertId}`, (err, result, fields) => {
-            if(err) return res.status(404).json(err)
-            return res.status(200).json({...result[0]});
-        })
-    })  
+   try {
+       const newCategory = await Categories.create(req.body);
+       res.status(200).json({message: 'successed', result: newCategory});
+   } catch (error) { 
+        res.status(401).json({message: 'successed', result: error});
+   }
 }
 
 
 export const editCategory = async(req, res) => {
-    if(!req.body.name) return res.status(403).json('something was wrong with your value');
-    connection.query(`UPDATE Categories  SET name ='${req.body.name}' WHERE id = ${req.params.id}`, (err, result, fields) => {
-        if(err) return res.status(404).json(err);
-        connection.query(`SELECT * FROM Categories WHERE id = ${req.params.id}`, (err, result, fields) => {
-            if(err) return res.status(404).json(err)
-            return res.status(200).json({...result[0]});
-        })
-    }) 
+    try {
+        const editUser = await Categories.update({name: req.body.name}, {where: {id: req.body.id}});
+        res.status(200).json(({message: 'successed'}));
+    } catch (error) {
+        res.status(401).json({message: 'successed', result: error});
+    }
 }
 
  
 export const deleteCategory = async(req, res) => {
-    if(!req.params.id) return res.status(403).json('something was wrong with your id');
-     connection.query(`DELETE FROM Categories WHERE id = ${req.params.id}`, (err, result, fields) => {
-         if(err) return res.status(404).json(err);
-         res.status(200).json('delete sucessfully');
-     }) 
- }
+    try {
+        await Categories.destroy({where: {id: req.params.id}});
+        res.status(200).json(({message: 'successed'}));
+    } catch (error) {
+        res.status(401).json({message: 'successed', result: error});
+    }
+}
