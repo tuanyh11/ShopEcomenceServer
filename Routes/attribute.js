@@ -3,8 +3,8 @@ import { getAttributes, createAttributes, updateAttributes, createCombineVariant
 
 const router = Router();
 
-router.get("/:id", getAttributes); 
-router.post("/", createCombineVariant);
+router.get("/:id", getAttributes);
+router.post("/", createAttributes)
 router.patch("/", updateAttributes);
 
 export default router; 

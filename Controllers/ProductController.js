@@ -3,31 +3,22 @@ import fs from 'fs';
 import path, { dirname } from 'path';
 import { upload } from '../config/multerConfig.js';
 import { fileURLToPath } from "url";
-import pool from '../connection/index.js'
-const __filename = fileURLToPath(
-    import.meta.url);
+import Products from '../models/Products.js';
+const __filename = fileURLToPath(import.meta.url); 
 const __dirname = dirname(__filename);
 
 
 export const createProduct = async(req, res) => {
-    if (Object.keys(req.body) === 0) return res.status(404).json('somthing was wrong with your value');
-    pool.query(`INSERT INTO Products(name, categoryId, image, material, weight)
-        VALUES('${req.body.nameproduct}', ${Number(req.body.categoryId)}, '${req.file.filename}',
-        '${req.body.material}', '${req.body.weight}'
-        )`,
-        (err, result) => {
+    try {
+        const newProduct = await Products.create({name: req.body.nameproduct, image: req.file.filename, discription: req.body.discriton, categoryId: req.body.categoryId});
+        res.status(200).json({message: 'successed', result: newProduct});
+        console.log(newProduct)
+    } catch (error) {
+        res.status(401).json({message: 'error', result: error});
+        console.log(error)
+    }
+}
 
-            if (err) return res.status(403).json(err);
-
-            qool.query(`INSERT INTO CombineOption(productId, value, price, quantity, brand, identity)
-                        VALUES(${Number(result.insertId)}, null, ${req.body.price},
-                        ${Number(req.body.quantity)}, ${req.body.brand}, null
-                        )`);
-
-            pool.query(`SELECT * FROM Products WHERE id = ${result.insertId}`, (err, result) => {
-                if (err) return res.status(403).json(err);
-                res.status(200).json({...result[0] });
-            })
-        }
-    )
+export const getProduct = async(req, res) => {
+   
 }
